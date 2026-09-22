@@ -39,10 +39,10 @@ if(!data.budgets || typeof data.budgets!=='object') data.budgets={electricity:30
 if(!Array.isArray(data.transactions)) data.transactions=[];
 // Existing spreadsheet payments are treated as paid if they are today or earlier; future payments are pending.
 data.transactions=data.transactions.filter(t=>t && typeof t==='object' && t.date && t.type);
-data.transactions.forEach(t=>{if(t.type==='payment' && !t.status)t.status=t.date<=iso(new Date())?'paid':'pending'});
 let editingDate=null;
-const money=n=>new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP'}).format(n);
-const iso=d=>{const x=new Date(d);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
+const money=n=>new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP'}).format(Number(n)||0);
+const iso=d=>{const x=d instanceof Date?new Date(d.getTime()):new Date(d);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')};
+data.transactions.forEach(t=>{if(t.type==='payment' && !t.status)t.status=t.date<=iso(new Date())?'paid':'pending'});
 function addDays(d,n){let x=d instanceof Date?new Date(d.getTime()):parseDateLocal(String(d));x.setDate(x.getDate()+n);return x}
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function isPaid(t){return t.type!=='payment'||t.status==='paid'}
@@ -94,6 +94,6 @@ function saveDay(){
  localStorage.setItem('budget14v7',JSON.stringify(data));localStorage.setItem('budget14v6',JSON.stringify(data));localStorage.setItem('budget14v4',JSON.stringify(data));closeModal();render();
 }
 function closeModal(){document.getElementById('modal').classList.remove('open')}
-function resetData(){if(confirm('Reset to the original spreadsheet sample data?')){localStorage.removeItem('budget14v6');localStorage.removeItem('budget14v4');location.reload()}}
+function resetData(){if(confirm('Reset to the original spreadsheet sample data?')){localStorage.removeItem('budget14v7');localStorage.removeItem('budget14v6');localStorage.removeItem('budget14v4');location.reload()}}
 render();
 </script></body></html>
