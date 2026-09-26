@@ -4,13 +4,13 @@
 <style>
 *{box-sizing:border-box}body{margin:0;background:#eef0f2;color:#20252b;font-family:system-ui,-apple-system,Segoe UI,sans-serif}.app{max-width:760px;margin:auto;background:#fff;min-height:100vh}
 header{padding:16px;border-bottom:1px solid #d5d9de;position:sticky;top:0;background:#fff;z-index:3}h1{font-size:20px;margin:0}.period{font-size:12px;color:#69717a;margin-top:2px}
-.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}.current{grid-column:1/-1;background:#f5f6f7;border:1px solid #d7dce1;border-radius:10px;padding:9px 11px}.current .label{font-size:10px}.current .value{font-size:23px}.reserve{background:#fff8e8}.available{background:#edf6ef}.box{background:#f5f6f7;border:1px solid #e0e3e6;border-radius:9px;padding:7px}.label{font-size:9px;text-transform:uppercase;color:#707780;font-weight:700}.value{font-size:15px;font-weight:800;margin-top:2px}.safe{background:#edf6ef}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}.current{grid-column:1/-1;background:#f5f6f7;border:1px solid #d7dce1;border-radius:10px;padding:9px 11px}.current .label{font-size:10px}.current .value{font-size:23px}.reserve{background:#fff8e8}.available{background:#edf6ef}.box{background:#f5f6f7;border:1px solid #e0e3e6;border-radius:9px;padding:7px}.label{font-size:9px;text-transform:uppercase;color:#707780;font-weight:700}.value{font-size:15px;font-weight:800;margin-top:2px}.safe{background:#edf6ef}.balance-edit{display:block;width:100%;border:0;background:transparent;text-align:left;padding:1px 0;color:#20252b;cursor:pointer}.balance-edit:after{content:" ✎";font-size:13px;color:#7a828a}
 .wrap{overflow:auto}.table{min-width:640px}.th,.day{display:grid;grid-template-columns:84px 75px 265px 80px 105px}.th{background:#e9ecef;color:#59616a;font-size:10px;text-transform:uppercase;font-weight:800}.th div,.day div{padding:8px 7px;border-right:1px solid #e0e3e6}.day{border-bottom:1px solid #e1e4e8;font-size:12px;min-height:54px;cursor:pointer}.day:hover{background:#fafbfc}.today{background:#fffbed}.date{font-weight:800}.th>div:last-child,.day>div:last-child{position:sticky;right:0;box-shadow:-3px 0 5px #0000000b}.in{color:#197743;font-weight:750}.out{color:#ad3838}.bal{font-weight:850;background:#f7f8fa}.neg{background:#ffeded;color:#a22f2f}.muted{color:#9aa1a8}.item{line-height:1.35}
 footer{padding:14px 16px 26px;border-top:1px solid #e0e3e6}.buttons{display:flex;gap:8px}.buttons button{flex:1;padding:11px;border-radius:10px;border:1px solid #ccd2d8;background:#fff;font-weight:750}.primary{background:#20252b!important;color:white;border-color:#20252b!important}
 .modal{display:none;position:fixed;inset:0;background:#0008;z-index:10;align-items:flex-end;justify-content:center}.modal.open{display:flex}.sheet{width:min(760px,100%);background:white;border-radius:18px 18px 0 0;padding:18px;max-height:90vh;overflow:auto}.sheet h2{margin:0 0 4px;font-size:19px}.hint{font-size:12px;color:#747c84;margin-bottom:12px}.entry{display:grid;grid-template-columns:1fr 100px 88px 34px;gap:7px;margin:7px 0}.entry .status{font-size:12px;padding:8px 5px}.roll-note{font-size:11px;color:#707780;margin-top:5px}.entry input{min-width:0}.input,select{padding:10px;border:1px solid #cfd5db;border-radius:9px;font-size:15px;width:100%;background:white}.remove{border:1px solid #ddd;background:#fff;border-radius:9px;color:#b22}.section{font-size:12px;font-weight:800;color:#606970;text-transform:uppercase;margin-top:14px}.sheet-actions{display:flex;gap:8px;margin-top:14px}.sheet-actions button{flex:1;padding:11px;border-radius:10px;border:1px solid #ccd2d8;font-weight:750}.sheet-actions .primary{background:#20252b;color:#fff}.plus{margin-top:7px;padding:8px;border:1px dashed #b9c0c7;border-radius:9px;background:#fafbfc;width:100%}
 </style></head><body><main class="app">
 <header><h1>14 Day Budget</h1><div id="period" class="period"></div>
-<div class="summary"><div class="current"><div class="label">Current balance</div><div id="current" class="value"></div></div><div class="box"><div class="label">Income (14 days)</div><div id="inc" class="value"></div></div><div class="box"><div class="label">Committed</div><div id="out" class="value"></div></div><div class="box reserve"><div class="label">Set aside</div><div id="reserve" class="value"></div></div><div class="box available"><div class="label">Unofficial available</div><div id="safe" class="value"></div></div></div><div id="reserveNote" class="roll-note"></div></header>
+<div class="summary"><div class="current"><div class="label">Current balance <span style="font-size:9px;color:#8a929a">(tap to edit)</span></div><button id="currentButton" class="value balance-edit" onclick="editCurrentBalance()">£0.00</button></div><div class="box"><div class="label">Income (7 days)</div><div id="inc7" class="value"></div></div><div class="box"><div class="label">Bills (7 days)</div><div id="bills7" class="value"></div></div><div class="box available"><div class="label">7-day spare</div><div id="spare7" class="value"></div></div></div><div id="reserveNote" class="roll-note"></div></header>
 <div class="wrap"><div class="table"><div class="th"><div>Date</div><div>In</div><div>Out</div><div>Spend</div><div>Rolling balance</div></div><div id="rows"></div></div></div>
 <footer><div class="buttons"><button onclick="openAdd()">＋ Add transaction</button><button onclick="openBudgetSettings()">⚙ Budget settings</button><button class="primary" onclick="resetData()">Reset sample</button></div></footer></main>
 <div id="modal" class="modal"><div class="sheet"><h2 id="modalTitle"></h2><div class="hint">Tap a value to edit it. Payments can be marked <b>Paid</b> or <b>Missed</b>. A missed payment moves to the next day.</div>
@@ -22,7 +22,7 @@ footer{padding:14px 16px 26px;border-top:1px solid #e0e3e6}.buttons{display:flex
 <script>const seed={"startingBalance": 31.47, "transactions": [{"id": "2026-09-21-4", "date": "2026-09-21", "type": "payment", "description": "Zil", "amount": 9.09}, {"id": "2026-09-21-spend", "date": "2026-09-21", "type": "spend", "description": "Spending", "amount": 20.0}, {"id": "2026-09-22-income", "date": "2026-09-22", "type": "income", "description": "Income", "amount": 380.0}, {"id": "2026-09-22-4", "date": "2026-09-22", "type": "payment", "description": "Mbt", "amount": 10.63}, {"id": "2026-09-22-6", "date": "2026-09-22", "type": "payment", "description": "Zil", "amount": 12.51}, {"id": "2026-09-22-8", "date": "2026-09-22", "type": "payment", "description": "BIP", "amount": 50.0}, {"id": "2026-09-23-4", "date": "2026-09-23", "type": "payment", "description": "EE", "amount": 44.89}, {"id": "2026-09-24-income", "date": "2026-09-24", "type": "income", "description": "Income", "amount": 350.0}, {"id": "2026-09-24-4", "date": "2026-09-24", "type": "payment", "description": "Quid", "amount": 8.48}, {"id": "2026-09-24-6", "date": "2026-09-24", "type": "payment", "description": "Zil", "amount": 32.98}, {"id": "2026-09-25-income", "date": "2026-09-25", "type": "income", "description": "Income", "amount": 302.0}, {"id": "2026-09-25-4", "date": "2026-09-25", "type": "payment", "description": "CU", "amount": 60.0}, {"id": "2026-09-25-6", "date": "2026-09-25", "type": "payment", "description": "Zab", "amount": 52.0}, {"id": "2026-09-29-4", "date": "2026-09-29", "type": "payment", "description": "Mbt", "amount": 10.63}, {"id": "2026-09-29-6", "date": "2026-09-29", "type": "payment", "description": "Rent", "amount": 148.05}, {"id": "2026-10-01-income", "date": "2026-10-01", "type": "income", "description": "Income", "amount": 250.0}, {"id": "2026-10-01-4", "date": "2026-10-01", "type": "payment", "description": "DVLA", "amount": 18.81}, {"id": "2026-10-01-6", "date": "2026-10-01", "type": "payment", "description": "Quid", "amount": 8.48}, {"id": "2026-10-01-8", "date": "2026-10-01", "type": "payment", "description": "YT", "amount": 12.99}, {"id": "2026-10-02-income", "date": "2026-10-02", "type": "income", "description": "Income", "amount": 200.0}, {"id": "2026-10-02-4", "date": "2026-10-02", "type": "payment", "description": "CU", "amount": 60.0}, {"id": "2026-10-02-6", "date": "2026-10-02", "type": "payment", "description": "Goo", "amount": 1.59}, {"id": "2026-10-02-8", "date": "2026-10-02", "type": "payment", "description": "Zil", "amount": 12.37}, {"id": "2026-10-05-4", "date": "2026-10-05", "type": "payment", "description": "Zil", "amount": 9.09}, {"id": "2026-10-06-income", "date": "2026-10-06", "type": "income", "description": "Income", "amount": 385.0}, {"id": "2026-10-06-4", "date": "2026-10-06", "type": "payment", "description": "Zil", "amount": 12.51}, {"id": "2026-10-07-4", "date": "2026-10-07", "type": "payment", "description": "AA", "amount": 5.71}, {"id": "2026-10-07-6", "date": "2026-10-07", "type": "payment", "description": "Spot", "amount": 12.99}, {"id": "2026-10-08-income", "date": "2026-10-08", "type": "income", "description": "Income", "amount": 300.0}, {"id": "2026-10-08-4", "date": "2026-10-08", "type": "payment", "description": "Zil", "amount": 32.98}, {"id": "2026-10-09-income", "date": "2026-10-09", "type": "income", "description": "Income", "amount": 200.0}, {"id": "2026-10-09-4", "date": "2026-10-09", "type": "payment", "description": "CU", "amount": 60.0}, {"id": "2026-10-15-income", "date": "2026-10-15", "type": "income", "description": "Income", "amount": 300.0}, {"id": "2026-10-16-income", "date": "2026-10-16", "type": "income", "description": "Income", "amount": 200.0}, {"id": "2026-10-16-4", "date": "2026-10-16", "type": "payment", "description": "CU", "amount": 60.0}, {"id": "2026-10-16-6", "date": "2026-10-16", "type": "payment", "description": "Zil", "amount": 12.37}, {"id": "2026-10-22-income", "date": "2026-10-22", "type": "income", "description": "Income", "amount": 300.0}, {"id": "2026-10-22-4", "date": "2026-10-22", "type": "payment", "description": "Zil", "amount": 33.0}, {"id": "2026-10-23-income", "date": "2026-10-23", "type": "income", "description": "Income", "amount": 580.0}, {"id": "2026-10-29-income", "date": "2026-10-29", "type": "income", "description": "Income", "amount": 300.0}, {"id": "2026-10-29-4", "date": "2026-10-29", "type": "payment", "description": "Rent", "amount": 148.05}, {"id": "2026-10-30-income", "date": "2026-10-30", "type": "income", "description": "Income", "amount": 200.0}, {"id": "2026-10-30-4", "date": "2026-10-30", "type": "payment", "description": "Zil", "amount": 12.38}]};
 let data=null;
 function loadSaved(){
-  const keys=['budget14v7','budget14v6','budget14v4'];
+  const keys=['budget14v10','budget14v7','budget14v6','budget14v4'];
   for(const key of keys){
     try{
       const raw=localStorage.getItem(key);
@@ -37,6 +37,7 @@ data=loadSaved();
 if(!data || typeof data!=='object') data=JSON.parse(JSON.stringify(seed));
 if(!data.budgets || typeof data.budgets!=='object') data.budgets={electricity:30,food:100,fuel:50};
 if(!Array.isArray(data.transactions)) data.transactions=[];
+if(typeof data.currentBalance!=='number') data.currentBalance=Number(data.startingBalance)||0;
 // Existing spreadsheet payments are treated as paid if they are today or earlier; future payments are pending.
 data.transactions=data.transactions.filter(t=>t && typeof t==='object' && t.date && t.type);
 let editingDate=null;
@@ -50,13 +51,12 @@ function reserveFor14Days(){return 2*((Number(data.budgets.electricity)||0)+(Num
 function openBudgetSettings(){document.getElementById('budgetElectricity').value=Number(data.budgets.electricity)||0;document.getElementById('budgetFood').value=Number(data.budgets.food)||0;document.getElementById('budgetFuel').value=Number(data.budgets.fuel)||0;updateBudgetPreview();document.getElementById('budgetModal').classList.add('open')}
 function closeBudgetSettings(){document.getElementById('budgetModal').classList.remove('open')}
 function updateBudgetPreview(){const e=Math.max(0,Number(document.getElementById('budgetElectricity').value)||0),f=Math.max(0,Number(document.getElementById('budgetFood').value)||0),fu=Math.max(0,Number(document.getElementById('budgetFuel').value)||0);document.getElementById('budgetPreview').textContent=`14-day set-aside: ${money(2*(e+f+fu))}`}
-function saveBudgetSettings(){data.budgets={electricity:Math.max(0,Number(document.getElementById('budgetElectricity').value)||0),food:Math.max(0,Number(document.getElementById('budgetFood').value)||0),fuel:Math.max(0,Number(document.getElementById('budgetFuel').value)||0)};localStorage.setItem('budget14v7',JSON.stringify(data));localStorage.setItem('budget14v6',JSON.stringify(data));localStorage.setItem('budget14v4',JSON.stringify(data));closeBudgetSettings();render()}
+function saveBudgetSettings(){data.budgets={electricity:Math.max(0,Number(document.getElementById('budgetElectricity').value)||0),food:Math.max(0,Number(document.getElementById('budgetFood').value)||0),fuel:Math.max(0,Number(document.getElementById('budgetFuel').value)||0)};localStorage.setItem('budget14v10',JSON.stringify(data));localStorage.setItem('budget14v7',JSON.stringify(data));localStorage.setItem('budget14v6',JSON.stringify(data));localStorage.setItem('budget14v4',JSON.stringify(data));closeBudgetSettings();render()}
 document.getElementById('budgetElectricity').addEventListener('input',updateBudgetPreview);document.getElementById('budgetFood').addEventListener('input',updateBudgetPreview);document.getElementById('budgetFuel').addEventListener('input',updateBudgetPreview);
 function render(){
  const now=new Date();now.setHours(0,0,0,0);const today=iso(now),dates=Array.from({length:14},(_,i)=>addDays(now,i)),from=today,to=iso(dates[13]);
- // Actual/current balance: all income and spending up to today, plus only payments marked paid.
- let current=data.startingBalance;
- data.transactions.forEach(t=>{if(t.date<=today){if(t.type==='income')current+=t.amount;else if(t.type==='spend')current-=t.amount;else if(t.type==='payment'&&isPaid(t))current-=t.amount}});
+ // Current balance is a manually entered real-world balance.
+ let current=Number(data.currentBalance)||0;
  const groups={};dates.forEach(d=>groups[iso(d)]=[]);data.transactions.filter(t=>t.date>=from&&t.date<=to).forEach(t=>groups[t.date].push(t));
  // Rolling balance shows the projected cash balance, counting pending payments on their current due date and actual spending/income.
  let bal=current,ti=0,toPay=0,ts=0,rows='';
@@ -68,18 +68,29 @@ function render(){
   rows+=`<div class="day ${i===0?'today':''}" onclick="openDay('${key}')"><div class="date">${formatDateShort(key)}</div><div class="in">${di?money(di):'—'}</div><div>${outs}</div><div class="out">${ds?money(ds):'—'}</div><div class="bal ${bal<0?'neg':''}">${money(bal)}</div></div>`});
  document.getElementById('rows').innerHTML=rows;
  document.getElementById('period').textContent=`${dates[0].toLocaleDateString('en-GB',{day:'numeric',month:'short'})} – ${dates[13].toLocaleDateString('en-GB',{day:'numeric',month:'short'})}`;
- document.getElementById('current').textContent=money(current);
- document.getElementById('inc').textContent=money(ti);
- document.getElementById('out').textContent=money(toPay+ts);
- const futureIncome=data.transactions.filter(t=>t.date>today&&t.type==='income').reduce((a,t)=>a+t.amount,0);
- const futurePayments=data.transactions.filter(t=>t.date>today&&t.type==='payment'&&t.status!=='paid').reduce((a,t)=>a+t.amount,0);
- const available=current+futureIncome-futurePayments-reserveFor14Days();
- document.getElementById('reserve').textContent=money(reserveFor14Days());
- document.getElementById('safe').textContent=money(available);document.getElementById('reserveNote').textContent=`14-day set-aside: Electricity ${money((data.budgets.electricity||0)*2)} · Food ${money((data.budgets.food||0)*2)} · Fuel ${money((data.budgets.fuel||0)*2)}`;
+ document.getElementById('currentButton').textContent=money(current);
+ const next7End=iso(addDays(now,6));
+ const income7=data.transactions.filter(t=>t.date>today&&t.date<=next7End&&t.type==='income').reduce((a,t)=>a+t.amount,0);
+ const bills7=data.transactions.filter(t=>t.date>=today&&t.date<=next7End&&t.type==='payment'&&t.status!=='paid').reduce((a,t)=>a+t.amount,0);
+ const weeklyEssentials=(Number(data.budgets.electricity)||0)+(Number(data.budgets.food)||0)+(Number(data.budgets.fuel)||0);
+ const spare7=current+income7-bills7-weeklyEssentials;
+ document.getElementById('inc7').textContent=money(income7);
+ document.getElementById('bills7').textContent=money(bills7);
+ document.getElementById('spare7').textContent=money(spare7);
+ document.getElementById('reserveNote').textContent=`7-day essentials set aside: Electricity ${money(data.budgets.electricity||0)} · Food ${money(data.budgets.food||0)} · Fuel ${money(data.budgets.fuel||0)} · Total ${money(weeklyEssentials)}`;
 }
 function parseDateLocal(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
 function formatDateLong(s){return parseDateLocal(s).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}
 function formatDateShort(s){return parseDateLocal(s).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}
+function editCurrentBalance(){
+ const value=prompt('Enter your actual current bank balance:', (Number(data.currentBalance)||0).toFixed(2));
+ if(value===null) return;
+ const n=Number(value);
+ if(!Number.isFinite(n)){alert('Please enter a valid amount.');return;}
+ data.currentBalance=Math.round(n*100)/100;
+ localStorage.setItem('budget14v10',JSON.stringify(data));
+ render();
+}
 function openDay(date){editingDate=date;document.getElementById('modalTitle').textContent=formatDateLong(date);fillEditor();document.getElementById('modal').classList.add('open')}
 function openAdd(){openDay(iso(new Date()))}
 function row(t){return `<div class="entry" data-id="${t.id}"><input class="input desc" value="${esc(t.description)}"><input class="input amt" type="number" step="0.01" min="0" value="${t.amount}">${t.type==='payment'?`<select class="input status"><option value="pending" ${t.status==='pending'?'selected':''}>Due</option><option value="paid" ${t.status==='paid'?'selected':''}>Paid</option><option value="missed" ${t.status==='missed'?'selected':''}>Missed</option></select>`:'<div></div>'}<button class="remove" onclick="this.parentElement.remove()">×</button></div>`}
@@ -91,9 +102,9 @@ function saveDay(){
    if(amount>0){let date=editingDate, finalStatus=status;if(type==='payment'&&status==='missed'){date=iso(addDays(parseDateLocal(editingDate),1));finalStatus='pending'}kept.push({id:existing?existing.id:('t-'+Date.now()+'-'+i+'-'+Math.random().toString(36).slice(2)),date,type,description:description||(type==='income'?'Income':type==='spend'?'Spending':'Payment'),amount,status:finalStatus})}
  });
  data.transactions=data.transactions.filter(t=>t.date!==editingDate).concat(kept);
- localStorage.setItem('budget14v7',JSON.stringify(data));localStorage.setItem('budget14v6',JSON.stringify(data));localStorage.setItem('budget14v4',JSON.stringify(data));closeModal();render();
+ localStorage.setItem('budget14v10',JSON.stringify(data));localStorage.setItem('budget14v7',JSON.stringify(data));localStorage.setItem('budget14v6',JSON.stringify(data));localStorage.setItem('budget14v4',JSON.stringify(data));closeModal();render();
 }
 function closeModal(){document.getElementById('modal').classList.remove('open')}
-function resetData(){if(confirm('Reset to the original spreadsheet sample data?')){localStorage.removeItem('budget14v7');localStorage.removeItem('budget14v6');localStorage.removeItem('budget14v4');location.reload()}}
+function resetData(){if(confirm('Reset to the original spreadsheet sample data?')){localStorage.removeItem('budget14v10');localStorage.removeItem('budget14v7');localStorage.removeItem('budget14v6');localStorage.removeItem('budget14v4');location.reload()}}
 render();
 </script></body></html>
